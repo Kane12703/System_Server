@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_DOCKER_PORT}
+    volumes:
+      - docker-nest-postgres:/var/lib/postgresql/data
+
+  api:
+    container_name: api
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+    restart: always
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PORT: ${POSTGRES_PORT}:${POSTGRES_DOCKER_PORT}
+    ports:
+      - ${PORT}:${PORT}
+    command: yarn start:dev
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+volumes:
+  docker-nest-postgres:
+    driver: local
