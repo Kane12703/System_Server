@@ -10,7 +10,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_PORT: ${POSTGRES_PORT}
     ports:
-      - ${POSTGRES_PORT}:${POSTGRES_DOCKER_PORT}
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - docker-nest-postgres:/var/lib/postgresql/data
 
@@ -26,7 +26,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_PORT: ${POSTGRES_PORT}:${POSTGRES_DOCKER_PORT}
+      POSTGRES_PORT: ${POSTGRES_PORT}
     ports:
       - ${PORT}:${PORT}
     command: yarn start:dev
@@ -37,7 +37,10 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-
 volumes:
+  api:
+    name: vapi
+    driver: local
   docker-nest-postgres:
+    name: vdocker-nest-postgres
     driver: local
