@@ -30,7 +30,7 @@ export class UserEntity extends Base {
   @Column({ type: 'enum', enum: StatusUser, default: StatusUser.INACTIVE })
   status: StatusUser;
 
-  @OneToOne(() => ProfileEntity, (proflie) => proflie.user) // specify inverse side as a second parameter
+  @OneToOne(() => ProfileEntity, (proflie) => proflie.user)
   profile: ProfileEntity;
 
   @ManyToMany(() => RoleEntity)
