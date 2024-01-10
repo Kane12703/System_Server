@@ -16,6 +16,7 @@ export class AuthController {
     return {
       messeage: 'Success',
       data: loginDto,
+      code: 200,
     };
   }
 }
