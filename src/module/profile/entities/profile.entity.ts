@@ -17,9 +17,9 @@ import {
   },
 })
 export class ProfileEntity extends Base {
-  @JoinColumn({ name: 'user_uuid', referencedColumnName: 'id' })
-  @OneToOne(() => UserEntity, (user) => user.profile)
-  user: UserEntity;
+  // @OneToOne(() => UserEntity, (user) => user.profile)
+  // @JoinColumn({ name: 'user_uuid', referencedColumnName: 'id' })
+  // user: UserEntity;
 
   @Expose()
   @Column({ type: 'varchar', length: 225, nullable: true })

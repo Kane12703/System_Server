@@ -19,6 +19,7 @@ export class PostgresProvider implements TypeOrmOptionsFactory {
       connectTimeoutMS: 30000,
       verboseRetryLog: true,
       nativeDriver: true,
+      // logging: true,
       subscribers: ['dist/**/*.subscriber{.ts,.js}'],
     };
   }

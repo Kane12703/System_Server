@@ -4,7 +4,7 @@ import { Expose, plainToClass } from 'class-transformer';
 import { RoleEntity } from '@/module/role/entities/role.entity';
 
 @Entity({
-  name: 'user',
+  name: 'permissions',
   orderBy: {
     createdAt: 'DESC',
   },
@@ -19,11 +19,6 @@ export class PermissionEntity extends Base {
   description: string;
 
   @ManyToMany(() => RoleEntity)
-  @JoinTable({
-    name: 'role_permissions',
-    joinColumn: { name: 'role_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'permission_id', referencedColumnName: 'id' },
-  })
   roles: RoleEntity[];
 
   constructor(permission: Partial<PermissionEntity>) {

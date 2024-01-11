@@ -13,7 +13,7 @@ import { ProfileEntity } from '@/module/profile/entities/profile.entity';
 import { RoleEntity } from '@/module/role/entities/role.entity';
 
 @Entity({
-  name: 'user',
+  name: 'user_table',
   orderBy: {
     createdAt: 'DESC',
   },
@@ -30,16 +30,16 @@ export class UserEntity extends Base {
   @Column({ type: 'enum', enum: StatusUser, default: StatusUser.INACTIVE })
   status: StatusUser;
 
-  @OneToOne(() => ProfileEntity, (proflie) => proflie.user)
-  profile: ProfileEntity;
+  // @OneToOne(() => ProfileEntity, (proflie) => proflie.user)
+  // profile: ProfileEntity;
 
-  @ManyToMany(() => RoleEntity)
-  @JoinTable({
-    name: 'user_roles',
-    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id' },
-  })
-  roles: RoleEntity[];
+  // @ManyToMany(() => RoleEntity)
+  // @JoinTable({
+  //   name: 'user_roles',
+  //   joinColumn: { name: 'user_id', referencedColumnName: 'id' },
+  //   inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id' },
+  // })
+  // roles: RoleEntity[];
 
   constructor(user: Partial<UserEntity>) {
     super(); // call constructor of BaseEntity
