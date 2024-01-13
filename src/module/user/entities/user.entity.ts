@@ -1,4 +1,4 @@
-import { Base } from '@/core/base/base_entity';
+import { Base } from '@/common';
 import {
   Column,
   Entity,
@@ -13,9 +13,9 @@ import { ProfileEntity } from '@/module/profile/entities/profile.entity';
 import { RoleEntity } from '@/module/role/entities/role.entity';
 
 @Entity({
-  name: 'user_table',
+  name: 'user',
   orderBy: {
-    createdAt: 'DESC',
+    created_at: 'DESC',
   },
 })
 export class UserEntity extends Base {
@@ -23,23 +23,23 @@ export class UserEntity extends Base {
   @Column({ type: 'varchar', length: 225, nullable: false, unique: true })
   email: string;
 
-  @Column({ type: 'varchar', length: 225, nullable: false, select: false })
+  @Column({ type: 'varchar', length: 225, nullable: false })
   password: string;
 
   @Expose()
   @Column({ type: 'enum', enum: StatusUser, default: StatusUser.INACTIVE })
   status: StatusUser;
 
-  // @OneToOne(() => ProfileEntity, (proflie) => proflie.user)
-  // profile: ProfileEntity;
+  @OneToOne(() => ProfileEntity, (proflie) => proflie.user)
+  profile: ProfileEntity;
 
-  // @ManyToMany(() => RoleEntity)
-  // @JoinTable({
-  //   name: 'user_roles',
-  //   joinColumn: { name: 'user_id', referencedColumnName: 'id' },
-  //   inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id' },
-  // })
-  // roles: RoleEntity[];
+  @ManyToMany(() => RoleEntity)
+  @JoinTable({
+    name: 'user_roles',
+    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id' },
+  })
+  roles: RoleEntity[];
 
   constructor(user: Partial<UserEntity>) {
     super(); // call constructor of BaseEntity

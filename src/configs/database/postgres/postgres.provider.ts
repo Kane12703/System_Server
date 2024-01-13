@@ -15,7 +15,7 @@ export class PostgresProvider implements TypeOrmOptionsFactory {
       entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: true,
       autoLoadEntities: true,
-      cache: true,
+      // cache: true,
       connectTimeoutMS: 30000,
       verboseRetryLog: true,
       nativeDriver: true,

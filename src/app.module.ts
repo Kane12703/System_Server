@@ -7,6 +7,7 @@ import { PostgresModule } from './configs';
 import { UserModule } from './module/user/user.module';
 import { RoleModule } from './module/role/role.module';
 import { PermissionModule } from './module/permission/permission.module';
+import { ProfileModule } from './module/profile/profile.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { PermissionModule } from './module/permission/permission.module';
     UserModule,
     RoleModule,
     PermissionModule,
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService],

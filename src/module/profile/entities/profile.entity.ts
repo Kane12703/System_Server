@@ -1,4 +1,4 @@
-import { Base } from '@/core/base/base_entity';
+import { Base } from '@/common';
 import { UserEntity } from '@/module/user/entities/user.entity';
 import { Expose, plainToClass } from 'class-transformer';
 import {
@@ -13,47 +13,38 @@ import {
 @Entity({
   name: 'profile',
   orderBy: {
-    createdAt: 'DESC',
+    created_at: 'DESC',
   },
 })
 export class ProfileEntity extends Base {
-  // @OneToOne(() => UserEntity, (user) => user.profile)
-  // @JoinColumn({ name: 'user_uuid', referencedColumnName: 'id' })
-  // user: UserEntity;
+  @OneToOne(() => UserEntity, (user) => user.profile)
+  @JoinColumn({ name: 'user_uuid', referencedColumnName: 'id' })
+  user: UserEntity;
 
-  @Expose()
   @Column({ type: 'varchar', length: 225, nullable: true })
   firstName: string;
 
-  @Expose()
   @Column({ type: 'varchar', length: 225, nullable: true })
   lastName: string;
 
-  @Expose()
-  @Column({ type: 'varchar', length: 20, nullable: true, unique: true })
+  @Column({ type: 'varchar', length: 20, nullable: true })
   phone: string;
 
-  @Expose()
   @Column({ type: 'varchar', nullable: true })
   address: string;
 
-  @Expose()
   @Column({ type: 'varchar', nullable: true })
   city: string;
 
-  @Expose()
   @Column({ type: 'varchar', nullable: true })
   state: string;
 
-  @Expose()
   @Column({ type: 'varchar', length: 10, nullable: true })
   zipcode: string;
 
-  @Expose()
   @Column({ type: 'varchar', length: 10, nullable: true })
   country: string;
 
-  @Expose()
   @Column({ type: 'varchar', nullable: true })
   image_url: string;
 

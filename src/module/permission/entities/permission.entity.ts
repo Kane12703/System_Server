@@ -1,12 +1,12 @@
-import { Base } from '@/core/base/base_entity';
+import { Base } from '@/common';
 import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 import { Expose, plainToClass } from 'class-transformer';
 import { RoleEntity } from '@/module/role/entities/role.entity';
 
 @Entity({
-  name: 'permissions',
+  name: 'permission',
   orderBy: {
-    createdAt: 'DESC',
+    created_at: 'DESC',
   },
 })
 export class PermissionEntity extends Base {
@@ -22,7 +22,7 @@ export class PermissionEntity extends Base {
   roles: RoleEntity[];
 
   constructor(permission: Partial<PermissionEntity>) {
-    super(); // call constructor of BaseEntity
+    super();
     if (permission) {
       Object.assign(
         this,

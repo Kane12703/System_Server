@@ -3,7 +3,6 @@ import * as bcryptjs from 'bcryptjs';
 export const hashPassword = async (password: string): Promise<string> => {
   try {
     const salt = bcryptjs.genSaltSync(10);
-    console.log(salt);
     return await bcryptjs.hash(password, salt);
   } catch (error) {
     console.log(error);

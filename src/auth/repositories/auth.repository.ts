@@ -1,5 +1,5 @@
 import { UserEntity } from '@/module/user/entities/user.entity';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Param } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LoginUserDto } from '../dtos';
@@ -27,9 +27,16 @@ export class AuthRepository extends Repository<UserEntity> {
   }
 
   async findUserByEmail(email: string) {
-    return await this.authRepository.query('SELECT * FROM "user"');
-    // .createQueryBuilder('user')
-    // .where('user.email = :email', { email })
-    // .getOne();
+    return await this.authRepository
+      .createQueryBuilder('user')
+      .where('user.email = :email', { email })
+      .getOne();
+  }
+
+  async finUserById(id: string) {
+    return await this.authRepository
+      .createQueryBuilder('user')
+      .where('user.id = :id', { id })
+      .getOne();
   }
 }

@@ -1,4 +1,4 @@
-import { Base } from '@/core/base/base_entity';
+import { Base } from '@/common';
 import {
   Column,
   Entity,
@@ -13,7 +13,7 @@ import { UserEntity } from '@/module/user/entities/user.entity';
 @Entity({
   name: 'role',
   orderBy: {
-    createdAt: 'DESC',
+    created_at: 'DESC',
   },
 })
 export class RoleEntity extends Base {
