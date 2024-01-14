@@ -3,16 +3,17 @@ import { ProfileDto } from '../dtos/profile.dto';
 import { ProfileRepository } from '../repositories/profile.repository';
 import { AuthService } from '@/auth';
 import { UpdateProfileDto } from '../dtos';
+import { UserService } from '@/module/user/services';
 
 @Injectable()
 export class ProfileService {
   constructor(
     private readonly profileRepository: ProfileRepository,
-    private readonly authService: AuthService,
+    private readonly userService: UserService,
   ) {}
 
   async createUser(profile: ProfileDto, userId: string) {
-    const findUser = await this.authService.finUserById(userId);
+    const findUser = await this.userService.finUserById(userId);
 
     if (!findUser) throw new BadRequestException('User not exists');
 

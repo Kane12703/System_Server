@@ -48,6 +48,7 @@ export class ProfileRepository extends Repository<ProfileEntity> {
         phone: profile.phone,
         lastName: profile.lastName,
         zipcode: profile.zipcode,
+        state: profile.state,
       })
       .where('user_uuid= :user_uuid', { user_uuid: userId })
       .execute();

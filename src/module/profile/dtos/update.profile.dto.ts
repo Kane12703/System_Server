@@ -1,32 +1,40 @@
 import { UserEntity } from '@/module/user/entities/user.entity';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEmpty, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UpdateProfileDto {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   firstName: string;
-  @IsNotEmpty()
+
   @IsString()
+  @IsOptional()
   lastName: string;
-  @IsNotEmpty()
+
   @IsString()
+  @IsOptional()
   phone: string;
-  @IsNotEmpty()
+
+  @IsOptional()
   @IsString()
   address: string;
-  @IsNotEmpty()
+
   @IsString()
+  @IsOptional()
   city: string;
-  @IsNotEmpty()
+
   @IsString()
+  @IsOptional()
   state: string;
-  @IsNotEmpty()
+
   @IsString()
+  @IsOptional()
   zipcode: string;
-  @IsNotEmpty()
+
   @IsString()
+  @IsOptional()
   country: string;
-  @IsNotEmpty()
+
   @IsString()
+  @IsOptional()
   image_url: string;
 }

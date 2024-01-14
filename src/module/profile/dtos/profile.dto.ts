@@ -1,13 +1,16 @@
 import { UserEntity } from '@/module/user/entities/user.entity';
-import { IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class ProfileDto {
+  @IsNotEmpty()
   @IsString()
   firstName: string;
 
+  @IsNotEmpty()
   @IsString()
   lastName: string;
 
+  @IsNotEmpty()
   @IsString()
   phone: string;
 
