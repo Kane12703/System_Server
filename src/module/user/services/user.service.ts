@@ -6,8 +6,8 @@ import { hashPassword } from '@/utils/password';
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
-  async findUserByEmail(user: LoginUserDto) {
-    return await this.userRepository.findUserByEmail(user.email);
+  async findUserByEmail(email: string) {
+    return await this.userRepository.findUserByEmail(email);
   }
 
   async createUser(user: LoginUserDto) {

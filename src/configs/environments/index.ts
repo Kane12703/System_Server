@@ -17,6 +17,11 @@ const REFRESH_TOKEN_SECRET: string = process.env.REFRESH_TOKEN_SECRET;
 const REFRESH_TOKEN_EXPIRATION_TIME: string =
   process.env.REFRESH_TOKEN_EXPIRATION_TIME;
 
+const MAIL_HOST: string = process.env.MAIL_HOST;
+const MAIL_USER: string = process.env.MAIL_USER;
+const MAIL_PASSWORD: string = process.env.MAIL_PASSWORD;
+const MAIL_FROM: string = process.env.MAIL_FROM;
+
 export const Environments = {
   POSTGRES_DB,
   POSTGRES_HOST,
@@ -27,4 +32,8 @@ export const Environments = {
   ACCESS_TOKEN_SECRET,
   REFRESH_TOKEN_EXPIRATION_TIME,
   REFRESH_TOKEN_SECRET,
+  MAIL_FROM,
+  MAIL_HOST,
+  MAIL_PASSWORD,
+  MAIL_USER,
 };
