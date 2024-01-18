@@ -33,7 +33,7 @@ export class UserEntity extends Base {
   @OneToOne(() => ProfileEntity, (proflie) => proflie.user)
   profile: ProfileEntity;
 
-  @ManyToMany(() => RoleEntity)
+  @ManyToMany(() => RoleEntity, (role) => role.users)
   @JoinTable({
     name: 'user_roles',
     joinColumn: { name: 'user_id', referencedColumnName: 'id' },

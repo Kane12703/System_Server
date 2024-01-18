@@ -20,7 +20,10 @@ export class UserService {
   }
 
   async finUserById(id: string) {
-    const user = await this.userRepository.finUserById(id);
-    return user;
+    return await this.userRepository.finUserById(id);
+  }
+
+  async updatePassword(user: LoginUserDto) {
+    return await this.userRepository.updatePassword(user);
   }
 }

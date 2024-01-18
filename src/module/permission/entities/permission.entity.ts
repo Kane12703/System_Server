@@ -18,7 +18,7 @@ export class PermissionEntity extends Base {
   @Column({ type: 'varchar' })
   description: string;
 
-  @ManyToMany(() => RoleEntity)
+  @ManyToMany(() => RoleEntity, (role) => role.permissions)
   roles: RoleEntity[];
 
   constructor(permission: Partial<PermissionEntity>) {

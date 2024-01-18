@@ -17,18 +17,16 @@ import { UserEntity } from '@/module/user/entities/user.entity';
   },
 })
 export class RoleEntity extends Base {
-  @Expose()
   @Column({ type: 'varchar' })
   name: string;
 
-  @Expose()
   @Column({ type: 'varchar' })
   description: string;
 
-  @ManyToMany(() => UserEntity)
+  @ManyToMany(() => UserEntity, (user) => user.roles)
   users: UserEntity[];
 
-  @ManyToMany(() => PermissionEntity)
+  @ManyToMany(() => PermissionEntity, (permissions) => permissions.roles)
   @JoinTable({
     name: 'role_permissions',
     joinColumn: {

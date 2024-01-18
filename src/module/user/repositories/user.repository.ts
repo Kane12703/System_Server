@@ -29,7 +29,7 @@ export class UserRepository extends Repository<UserEntity> {
   async findUserByEmail(email: string) {
     return await this.userRepository
       .createQueryBuilder('user')
-      .where('user.email = :email', { email })
+      .where('user.email = :email', { email: email })
       .getOne();
   }
 
@@ -38,5 +38,14 @@ export class UserRepository extends Repository<UserEntity> {
       .createQueryBuilder('user')
       .where('user.id = :id', { id })
       .getOne();
+  }
+
+  async updatePassword(user: LoginUserDto) {
+    return await this.userRepository
+      .createQueryBuilder()
+      .update(UserEntity)
+      .set({ password: user.password })
+      .where('email= :email', { email: user.email })
+      .execute();
   }
 }
