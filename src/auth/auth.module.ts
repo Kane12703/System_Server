@@ -9,9 +9,10 @@ import { JwtService } from '@nestjs/jwt';
 import { AccessTokenStrategy, RefreshTokenStrategy } from './strategies';
 import { UserModule } from '@/module/user/user.module';
 import { UserService } from '@/module/user/services';
+import { MailerModule, MailerService } from '@nestjs-modules/mailer';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity]), UserModule],
+  imports: [TypeOrmModule.forFeature([UserEntity]), UserModule,MailerModule],
   controllers: [AuthController],
   providers: [
     AuthService,
@@ -19,6 +20,7 @@ import { UserService } from '@/module/user/services';
     JwtService,
     AccessTokenStrategy,
     RefreshTokenStrategy,
+
   ],
 })
 export class AuthModule {}

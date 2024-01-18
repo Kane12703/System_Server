@@ -17,13 +17,15 @@ export class AuthService {
 
     if (finUser) throw new ForbiddenException('Email already exists');
 
+    console.log(user.email)
+
     await this.mailService.sendMail({
       to: user.email,
       subject: 'Welcome to my website',
-      template: './welcome',
-      // context: {
-      //   name: finUser.profile.firstName,
-      // },
+      template: './wellcome',
+      context: {
+        name: user.email
+      },
     });
 
     const createUser = await this.userService.createUser(user);

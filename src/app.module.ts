@@ -32,7 +32,7 @@ import { join } from 'path';
         from: `"No Reply" <${Environments.MAIL_FROM}>`,
       },
       template: {
-        dir: join(__dirname, 'src/configs/mail/templates'),
+        dir: join(__dirname, 'src/configs/email/templates'),
         adapter: new HandlebarsAdapter(),
         options: {
           strict: true,
