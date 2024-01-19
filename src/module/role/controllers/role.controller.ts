@@ -11,6 +11,8 @@ import {
 import { CreateRoleDto, UpdateRoleDto } from '../dtos';
 import { AccessTokenGuard } from '@/common';
 import { RoleService } from '../services/role.service';
+import { IsUUID } from 'class-validator';
+import { UuidVaidater } from '@/common/validater/uuid.vaidater';
 
 @Controller('role')
 @UseGuards(AccessTokenGuard)
@@ -18,27 +20,33 @@ export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
   @Get()
-  getAllRoles() {
+  async getAllRoles() {
     return this.roleService.getAllRoles();
   }
 
   @Get(':id')
-  getRoleById(@Param('id') id: string) {
+  async getRoleById(@Param('id') id: string) {
+    UuidVaidater(id);
     return this.roleService.getRoleById(id);
   }
 
   @Post()
-  createRole(@Body() createRoleDto: CreateRoleDto) {
+  async createRole(@Body() createRoleDto: CreateRoleDto) {
     return this.roleService.createRole(createRoleDto);
   }
 
   @Put(':id')
-  updateRole(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
+  async updateRole(
+    @Param('id') id: string,
+    @Body() updateRoleDto: UpdateRoleDto,
+  ) {
+    UuidVaidater(id);
     return this.roleService.updateRole(id, updateRoleDto);
   }
 
   @Delete(':id')
-  deleteRole(@Param('id') id: string) {
+  async deleteRole(@Param('id') id: string) {
+    UuidVaidater(id);
     return this.roleService.deleteRole(id);
   }
 }
