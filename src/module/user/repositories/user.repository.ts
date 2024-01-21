@@ -3,6 +3,7 @@ import { UserEntity } from '@/module/user/entities/user.entity';
 import { Injectable, Param } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { AddRoleDTO } from '../dtos';
 
 @Injectable()
 export class UserRepository extends Repository<UserEntity> {
@@ -36,6 +37,7 @@ export class UserRepository extends Repository<UserEntity> {
   async finUserById(id: string) {
     return await this.userRepository
       .createQueryBuilder('user')
+      .leftJoinAndSelect('user.roles', 'roles')
       .where('user.id = :id', { id })
       .getOne();
   }
@@ -47,5 +49,14 @@ export class UserRepository extends Repository<UserEntity> {
       .set({ password: user.password })
       .where('email= :email', { email: user.email })
       .execute();
+  }
+
+  async addRoleUser(addRole: AddRoleDTO) {
+    await this.userRepository
+      .createQueryBuilder()
+      .relation(UserEntity, 'roles')
+      .of(addRole.user_id)
+      .add(addRole.role_id);
+    return this.finUserById(addRole.user_id);
   }
 }

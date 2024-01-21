@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { CreateRoleDto, UpdateRoleDto } from '../dtos';
 import { RoleRepository } from '../repositories/role.repository';
+import { UuidVaidater } from '@/common/validater/uuid.vaidater';
 
 @Injectable()
 export class RoleService {
@@ -27,7 +28,7 @@ export class RoleService {
 
   async getRoleById(id: string) {
     try {
-      const role = await this.roleRepository.findOne({ where: { id } });
+      const role = await this.roleRepository.findRoleById(id);
 
       if (!role) throw new ForbiddenException('Role is not exists');
 
@@ -65,7 +66,7 @@ export class RoleService {
 
   async updateRole(id: string, updateRoleDto: UpdateRoleDto) {
     try {
-      const findRole = await this.roleRepository.findOne({ where: { id: id } });
+      const findRole = await this.roleRepository.findRoleById(id);
       if (!findRole) throw new BadRequestException('Role is not exists');
 
       const updateRole = await this.roleRepository.update(id, {

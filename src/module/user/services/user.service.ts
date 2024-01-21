@@ -1,11 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserRepository } from '../repositories';
 import { LoginUserDto } from '@/auth/dtos';
 import { hashPassword } from '@/utils/password';
+import { AddRoleDTO } from '../dtos';
+import { RoleRepository } from '@/module/role/repositories/role.repository';
+import { UserEntity } from '../entities/user.entity';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly roleRepository: RoleRepository,
+  ) {}
   async findUserByEmail(email: string) {
     return await this.userRepository.findUserByEmail(email);
   }
@@ -25,5 +31,25 @@ export class UserService {
 
   async updatePassword(user: LoginUserDto) {
     return await this.userRepository.updatePassword(user);
+  }
+
+  async addRoleUser(addRole: AddRoleDTO) {
+    try {
+      const findUser = await this.userRepository.finUserById(addRole.user_id);
+      if (!findUser) throw new BadRequestException('User not exists');
+
+      const findRole = await this.roleRepository.findRoleById(addRole.role_id);
+      if (!findRole) throw new BadRequestException('Role not exists');
+
+      const user = await this.userRepository.addRoleUser(addRole);
+
+      return {
+        code: HttpStatus.OK,
+        message: 'Success',
+        data: user,
+      };
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 }
