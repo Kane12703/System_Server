@@ -49,6 +49,8 @@ export class AuthService {
     try {
       const finUser = await this.userService.findUserByEmail(user.email);
 
+      console.log(finUser);
+
       if (!finUser) throw new BadRequestException('Email is not exists');
 
       const isMatch = await comparePassword(user.password, finUser.password);
@@ -56,12 +58,16 @@ export class AuthService {
       if (!isMatch)
         throw new BadRequestException('Emaill or Password  is wrong ');
 
-      const tokens = await this.jwtService.getTokens(finUser.id, finUser.email);
+      const tokens = await this.jwtService.getTokens(
+        finUser.id,
+        finUser.email,
+        finUser.roles,
+      );
 
       return {
+        code: HttpStatus.OK,
         message: 'Login succes',
         tokens,
-        code: HttpStatus.OK,
       };
     } catch (error) {
       throw error;
@@ -72,10 +78,14 @@ export class AuthService {
     try {
       const finUser = await this.userService.finUserById(userId);
       if (!finUser) throw new ForbiddenException('User is not exists');
-      const tokens = await this.jwtService.getTokens(finUser.id, finUser.email);
+      const tokens = await this.jwtService.getTokens(
+        finUser.id,
+        finUser.email,
+        finUser.roles,
+      );
       return {
-        message: 'Get refreshtoken  succes',
         code: HttpStatus.OK,
+        message: 'Get refreshtoken  succes',
         tokens,
       };
     } catch (error) {
@@ -95,8 +105,8 @@ export class AuthService {
       });
 
       return {
-        message: 'Reset password success',
         code: HttpStatus.OK,
+        message: 'Reset password success',
       };
     } catch (error) {
       throw error;
@@ -122,8 +132,8 @@ export class AuthService {
       });
 
       return {
-        message: 'Change password success',
         code: HttpStatus.OK,
+        message: 'Change password success',
       };
     } catch (error) {
       throw error;

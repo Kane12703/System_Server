@@ -41,6 +41,13 @@ export class UserService {
       const findRole = await this.roleRepository.findRoleById(addRole.role_id);
       if (!findRole) throw new BadRequestException('Role not exists');
 
+      const userHasRole = findUser.roles.some(
+        (role) => role.id === addRole.role_id,
+      );
+      if (userHasRole) {
+        throw new BadRequestException('User already has the role');
+      }
+
       const user = await this.userRepository.addRoleUser(addRole);
 
       return {
@@ -51,5 +58,14 @@ export class UserService {
     } catch (error) {
       throw new BadRequestException(error.message);
     }
+  }
+
+  async getAllUser() {
+    const users = await this.userRepository.find({ relations: ['roles'] });
+    return {
+      code: HttpStatus.OK,
+      message: 'Success',
+      data: users,
+    };
   }
 }

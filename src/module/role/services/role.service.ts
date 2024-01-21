@@ -45,11 +45,11 @@ export class RoleService {
   async createRole(createRoleDto: CreateRoleDto) {
     try {
       const findRole = await this.roleRepository.findOneBy({
-        name: createRoleDto.name.toUpperCase(),
+        name: createRoleDto.name.toLowerCase(),
       });
       if (findRole) throw new BadRequestException('Role is exists');
       const createRole = await this.roleRepository.create({
-        name: createRoleDto.name.toUpperCase(),
+        name: createRoleDto.name.toLowerCase(),
         description: createRoleDto.description,
       });
       const role = await this.roleRepository.save(createRole);
@@ -70,7 +70,7 @@ export class RoleService {
       if (!findRole) throw new BadRequestException('Role is not exists');
 
       const updateRole = await this.roleRepository.update(id, {
-        name: updateRoleDto.name.toUpperCase(),
+        name: updateRoleDto.name.toLowerCase(),
         description: updateRoleDto.description,
       });
 

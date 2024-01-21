@@ -30,7 +30,9 @@ export class UserRepository extends Repository<UserEntity> {
   async findUserByEmail(email: string) {
     return await this.userRepository
       .createQueryBuilder('user')
-      .where('user.email = :email', { email: email })
+      .leftJoinAndSelect('user.roles', 'roles')
+      .select(['user', 'roles.name', 'roles.id'])
+      .where('user.email = :email', { email })
       .getOne();
   }
 
@@ -55,8 +57,8 @@ export class UserRepository extends Repository<UserEntity> {
     await this.userRepository
       .createQueryBuilder()
       .relation(UserEntity, 'roles')
-      .of(addRole.user_id)
-      .add(addRole.role_id);
+      .of({ id: addRole.user_id })
+      .add({ id: addRole.role_id });
     return this.finUserById(addRole.user_id);
   }
 }
