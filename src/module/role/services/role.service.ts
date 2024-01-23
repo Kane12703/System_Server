@@ -4,13 +4,17 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { CreateRoleDto, UpdateRoleDto } from '../dtos';
+import { AddPermissionDTO, CreateRoleDto, UpdateRoleDto } from '../dtos';
 import { RoleRepository } from '../repositories/role.repository';
 import { UuidVaidater } from '@/common/validater/uuid.vaidater';
+import { PermissionRepository } from '@/module/permission/repositories/permission.repository';
 
 @Injectable()
 export class RoleService {
-  constructor(private readonly roleRepository: RoleRepository) {}
+  constructor(
+    private readonly roleRepository: RoleRepository,
+    private readonly permissionRepository: PermissionRepository,
+  ) {}
 
   async getAllRoles() {
     try {
@@ -95,6 +99,38 @@ export class RoleService {
       return { code: HttpStatus.OK, message: 'Role deleted successfully' };
     } catch (error) {
       throw error;
+    }
+  }
+
+  async addPermissionRole(addPermission: AddPermissionDTO) {
+    try {
+      const findRole = await this.roleRepository.findRoleById(
+        addPermission.role_id,
+      );
+      if (!findRole) throw new BadRequestException('Role not exists');
+
+      const findPermission = await this.permissionRepository.findPermissionById(
+        addPermission.permission_id,
+      );
+      if (!findPermission)
+        throw new BadRequestException('Permission not exists');
+
+      const roleHasPermission = findRole.permissions.some(
+        (permission) => permission.id === addPermission.permission_id,
+      );
+      if (roleHasPermission) {
+        throw new BadRequestException('Role already has the role');
+      }
+
+      const role = await this.roleRepository.addPermissionRole(addPermission);
+
+      return {
+        code: HttpStatus.OK,
+        message: 'Success',
+        data: role,
+      };
+    } catch (error) {
+      throw new BadRequestException(error.message);
     }
   }
 }

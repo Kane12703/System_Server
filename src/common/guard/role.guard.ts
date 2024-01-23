@@ -28,9 +28,7 @@ export class RolesGuard implements CanActivate {
         )
       )
     ) {
-      throw new UnauthorizedException(
-        'You need permission to access this resource',
-      );
+      throw new UnauthorizedException('You need role to access this resource');
     }
 
     return true;

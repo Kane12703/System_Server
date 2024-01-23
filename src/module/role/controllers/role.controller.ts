@@ -8,13 +8,14 @@ import {
   Param,
   UseGuards,
 } from '@nestjs/common';
-import { CreateRoleDto, UpdateRoleDto } from '../dtos';
-import { AccessTokenGuard, RolesGuard } from '@/common';
+import { AddPermissionDTO, CreateRoleDto, UpdateRoleDto } from '../dtos';
+import { AccessTokenGuard, Permissions, RolesGuard } from '@/common';
 import { RoleService } from '../services/role.service';
 import { IsUUID } from 'class-validator';
 import { UuidVaidater } from '@/common/validater/uuid.vaidater';
 import { Roles } from '@/common/decorators/roles.decorator';
-import { Role } from '@/common/enum';
+import { Permission, Role } from '@/common/enum';
+import { PermissionGuard } from '@/common/guard/permission.guard';
 @UseGuards(AccessTokenGuard)
 @Controller('role')
 export class RoleController {
@@ -41,7 +42,8 @@ export class RoleController {
   }
 
   @Roles(Role.ADMIN)
-  @UseGuards(RolesGuard)
+  @Permissions(Permission.READ, Permission.UPDATE)
+  @UseGuards(RolesGuard, PermissionGuard)
   @Put(':id')
   async updateRole(
     @Param('id') id: string,
@@ -52,10 +54,17 @@ export class RoleController {
   }
 
   @Roles(Role.ADMIN)
-  @UseGuards(RolesGuard)
+  @Permissions(Permission.DELETE)
+  @UseGuards(RolesGuard, PermissionGuard)
   @Delete(':id')
   async deleteRole(@Param('id') id: string) {
     UuidVaidater(id);
     return this.roleService.deleteRole(id);
+  }
+
+  @Roles(Role.ADMIN)
+  @Post('add_permission')
+  async addPermissionRole(@Body() addPermission: AddPermissionDTO) {
+    return this.roleService.addPermissionRole(addPermission);
   }
 }
