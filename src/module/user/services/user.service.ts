@@ -60,6 +60,35 @@ export class UserService {
     }
   }
 
+  async deleteRoleUser(deleteRole: AddRoleDTO) {
+    try {
+      const findUser = await this.userRepository.finUserById(
+        deleteRole.user_id,
+      );
+      if (!findUser) throw new BadRequestException('User not exists');
+
+      const findRole = await this.roleRepository.findRoleById(
+        deleteRole.role_id,
+      );
+      if (!findRole) throw new BadRequestException('Role not exists');
+
+      const userHasRole = findUser.roles.some(
+        (role) => role.id === deleteRole.role_id,
+      );
+      if (!userHasRole) {
+        throw new BadRequestException('User already not has the role');
+      }
+      await this.userRepository.deleteRoleUser(deleteRole);
+
+      return {
+        code: HttpStatus.OK,
+        message: 'Delete role success',
+      };
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
   async getAllUser() {
     const users = await this.userRepository.find({ relations: ['roles'] });
     return {

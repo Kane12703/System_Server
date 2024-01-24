@@ -42,4 +42,12 @@ export class RoleRepository extends Repository<RoleEntity> {
       .add({ id: addPermission.permission_id });
     return await this.findRoleById(addPermission.role_id);
   }
+
+  async deletePermissionRole(addPermission: AddPermissionDTO) {
+    return await this.roleRepository
+      .createQueryBuilder()
+      .relation(RoleEntity, 'permissions')
+      .of({ id: addPermission.role_id })
+      .remove({ id: addPermission.permission_id });
+  }
 }

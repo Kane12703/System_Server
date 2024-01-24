@@ -58,7 +58,9 @@ export class PermissionService {
       const updatePermission = await this.permissionRepository.updatePermission(
         id,
         {
-          name: updatePermissionDto.name,
+          name: updatePermissionDto.name
+            ? updatePermissionDto.name.toLowerCase()
+            : undefined,
           description: updatePermissionDto.description,
         },
       );

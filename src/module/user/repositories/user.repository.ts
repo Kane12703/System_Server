@@ -61,4 +61,12 @@ export class UserRepository extends Repository<UserEntity> {
       .add({ id: addRole.role_id });
     return this.finUserById(addRole.user_id);
   }
+
+  async deleteRoleUser(deleteRole: AddRoleDTO) {
+    return await this.userRepository
+      .createQueryBuilder()
+      .relation(UserEntity, 'roles')
+      .of({ id: deleteRole.user_id })
+      .remove({ id: deleteRole.role_id });
+  }
 }

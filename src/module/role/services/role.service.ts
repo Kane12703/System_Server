@@ -74,7 +74,7 @@ export class RoleService {
       if (!findRole) throw new BadRequestException('Role is not exists');
 
       const updateRole = await this.roleRepository.update(id, {
-        name: updateRoleDto.name.toLowerCase(),
+        name: updateRoleDto.name ? updateRoleDto.name.toLowerCase() : undefined,
         description: updateRoleDto.description,
       });
 
@@ -128,6 +128,37 @@ export class RoleService {
         code: HttpStatus.OK,
         message: 'Success',
         data: role,
+      };
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async deletePermissionRole(deletePermission: AddPermissionDTO) {
+    try {
+      const findRole = await this.roleRepository.findRoleById(
+        deletePermission.role_id,
+      );
+      if (!findRole) throw new BadRequestException('Role not exists');
+
+      const findPermission = await this.permissionRepository.findPermissionById(
+        deletePermission.permission_id,
+      );
+      if (!findPermission)
+        throw new BadRequestException('Permission not exists');
+
+      const roleHasPermission = findRole.permissions.some(
+        (permission) => permission.id === deletePermission.permission_id,
+      );
+      if (!roleHasPermission) {
+        throw new BadRequestException('Role not already has the permision');
+      }
+
+      await this.roleRepository.deletePermissionRole(deletePermission);
+
+      return {
+        code: HttpStatus.OK,
+        message: 'Delete Success',
       };
     } catch (error) {
       throw new BadRequestException(error.message);

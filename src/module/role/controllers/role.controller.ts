@@ -54,17 +54,24 @@ export class RoleController {
   }
 
   @Roles(Role.ADMIN)
-  @Permissions(Permission.DELETE)
-  @UseGuards(RolesGuard, PermissionGuard)
+  @UseGuards(RolesGuard)
+  @Post('permission')
+  async addPermissionRole(@Body() addPermission: AddPermissionDTO) {
+    return this.roleService.addPermissionRole(addPermission);
+  }
+
+  @Roles(Role.ADMIN)
+  @UseGuards(RolesGuard)
+  @Delete('permission')
+  async deletePermissionRole(@Body() deletePermission: AddPermissionDTO) {
+    return this.roleService.deletePermissionRole(deletePermission);
+  }
+
+  @Roles(Role.ADMIN)
+  @UseGuards(RolesGuard)
   @Delete(':id')
   async deleteRole(@Param('id') id: string) {
     UuidVaidater(id);
     return this.roleService.deleteRole(id);
-  }
-
-  @Roles(Role.ADMIN)
-  @Post('add_permission')
-  async addPermissionRole(@Body() addPermission: AddPermissionDTO) {
-    return this.roleService.addPermissionRole(addPermission);
   }
 }
