@@ -10,9 +10,11 @@ import { ProfileModule } from './module/profile/profile.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { join } from 'path';
+import { CloudinaryModule } from './configs/cloudinary/cloudinary.module';
 
 @Module({
   imports: [
+    CloudinaryModule,
     AuthModule,
     PostgresModule,
     UserModule,
@@ -39,6 +41,7 @@ import { join } from 'path';
         },
       },
     }),
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

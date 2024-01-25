@@ -34,7 +34,8 @@ export class UpdateProfileDto {
   @IsOptional()
   country: string;
 
-  @IsString()
   @IsOptional()
   image_url: string;
+
+  public_id: string;
 }

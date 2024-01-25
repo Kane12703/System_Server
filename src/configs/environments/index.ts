@@ -22,6 +22,10 @@ const MAIL_USER: string = process.env.MAIL_USER;
 const MAIL_PASSWORD: string = process.env.MAIL_PASSWORD;
 const MAIL_FROM: string = process.env.MAIL_FROM;
 
+const CLOUDINARY_NAME: string = process.env.CLOUDINARY_NAME;
+const CLOUDINARY_API_KEY: string = process.env.CLOUDINARY_API_KEY;
+const CLOUDINARY_API_SECRET: string = process.env.CLOUDINARY_API_SECRET;
+const FOLDER_CLOUDINARY: string = process.env.FOLDER_CLOUDINARY;
 export const Environments = {
   POSTGRES_DB,
   POSTGRES_HOST,
@@ -36,4 +40,8 @@ export const Environments = {
   MAIL_HOST,
   MAIL_PASSWORD,
   MAIL_USER,
+  CLOUDINARY_NAME,
+  CLOUDINARY_API_KEY,
+  FOLDER_CLOUDINARY,
+  CLOUDINARY_API_SECRET,
 };

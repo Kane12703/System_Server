@@ -39,17 +39,7 @@ export class ProfileRepository extends Repository<ProfileEntity> {
     return await this.profileRepository
       .createQueryBuilder()
       .update(ProfileEntity)
-      .set({
-        address: profile.address,
-        city: profile.city,
-        country: profile.country,
-        firstName: profile.firstName,
-        image_url: profile.image_url,
-        phone: profile.phone,
-        lastName: profile.lastName,
-        zipcode: profile.zipcode,
-        state: profile.state,
-      })
+      .set(profile)
       .where('user_uuid= :user_uuid', { user_uuid: userId })
       .execute();
   }

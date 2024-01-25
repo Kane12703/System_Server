@@ -1,5 +1,5 @@
 import { UserEntity } from '@/module/user/entities/user.entity';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class ProfileDto {
   @IsNotEmpty()
@@ -29,8 +29,10 @@ export class ProfileDto {
   @IsString()
   country: string;
 
-  @IsString()
+  @IsOptional()
   image_url: string;
+
+  public_id: string;
 
   user: UserEntity;
 }

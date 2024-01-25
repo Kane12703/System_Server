@@ -48,6 +48,9 @@ export class ProfileEntity extends Base {
   @Column({ type: 'varchar', nullable: true })
   image_url: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  public_id: string;
+
   constructor(profile: Partial<ProfileEntity>) {
     super(); // call constructor of BaseEntity
     if (profile) {

@@ -6,9 +6,14 @@ import { ProfileService } from './services/profile.service';
 import { ProfileRepository } from './repositories/profile.repository';
 import { AuthModule } from '@/auth';
 import { UserModule } from '../user/user.module';
+import { CloudinaryModule } from '@/configs/cloudinary/cloudinary.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ProfileEntity]), UserModule],
+  imports: [
+    TypeOrmModule.forFeature([ProfileEntity]),
+    UserModule,
+    CloudinaryModule,
+  ],
   controllers: [ProfileController],
   providers: [ProfileService, ProfileRepository],
 })
