@@ -4,6 +4,7 @@ import { Injectable, Param } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AddRoleDTO } from '../dtos';
+import { UpdatePasswordDto } from '@/auth/dtos/update_password.dto';
 
 @Injectable()
 export class UserRepository extends Repository<UserEntity> {
@@ -44,7 +45,7 @@ export class UserRepository extends Repository<UserEntity> {
       .getOne();
   }
 
-  async updatePassword(user: LoginUserDto) {
+  async updatePassword(user: UpdatePasswordDto) {
     return await this.userRepository
       .createQueryBuilder()
       .update(UserEntity)

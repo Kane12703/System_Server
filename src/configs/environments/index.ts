@@ -26,6 +26,9 @@ const CLOUDINARY_NAME: string = process.env.CLOUDINARY_NAME;
 const CLOUDINARY_API_KEY: string = process.env.CLOUDINARY_API_KEY;
 const CLOUDINARY_API_SECRET: string = process.env.CLOUDINARY_API_SECRET;
 const FOLDER_CLOUDINARY: string = process.env.FOLDER_CLOUDINARY;
+const TWO_FACTOR_AUTHENTICATION_APP_NAME: string =
+  process.env.TWO_FACTOR_AUTHENTICATION_APP_NAME;
+
 export const Environments = {
   POSTGRES_DB,
   POSTGRES_HOST,
@@ -44,4 +47,5 @@ export const Environments = {
   CLOUDINARY_API_KEY,
   FOLDER_CLOUDINARY,
   CLOUDINARY_API_SECRET,
+  TWO_FACTOR_AUTHENTICATION_APP_NAME,
 };

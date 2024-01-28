@@ -30,6 +30,12 @@ export class UserEntity extends Base {
   @Column({ type: 'enum', enum: StatusUser, default: StatusUser.INACTIVE })
   status: StatusUser;
 
+  @Column({ type: 'varchar', nullable: true })
+  twoFactorAuthenticationSecret: string;
+
+  @Column({ type: 'boolean', default: false })
+  isTwoFactorAuthenticationEnabled: boolean;
+
   @OneToOne(() => ProfileEntity, (proflie) => proflie.user)
   profile: ProfileEntity;
 

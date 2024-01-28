@@ -10,6 +10,7 @@ import { JWTService } from '@/configs/jwt';
 import { UserService } from '@/module/user/services';
 import { MailerService } from '@nestjs-modules/mailer';
 import { RoleRepository } from '@/module/role/repositories/role.repository';
+import { TwoFactorAuthenticationService } from './twoFactorAuthentication.service';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +19,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly mailService: MailerService,
     private readonly roleRepository: RoleRepository,
+    private readonly twoFactorAuthenticationService: TwoFactorAuthenticationService,
   ) {}
   async registerUser(user: LoginUserDto) {
     try {
@@ -25,16 +27,22 @@ export class AuthService {
 
       if (finUser) throw new BadRequestException('Email already exists');
 
-      await this.mailService.sendMail({
-        to: user.email,
-        subject: 'Welcome to my website',
-        template: './wellcome',
-        context: {
-          name: user.email,
-        },
-      });
+      // await this.mailService.sendMail({
+      //   to: user.email,
+      //   subject: 'Welcome to my website',
+      //   template: './wellcome',
+      //   context: {
+      //     name: user.email,
+      //   },
+      // });
+      const secret =
+        await this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret();
 
-      const createUser = await this.userService.createUser(user);
+      const createUser = await this.userService.createUser({
+        email: user.email,
+        password: user.password,
+        twoFactorAuthenticationSecret: secret,
+      });
 
       if (!createUser) throw new BadRequestException('Register no succes');
 
@@ -174,5 +182,39 @@ export class AuthService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async sendOtptwoFactorAuthentication(id: string) {
+    const finUser = await this.userService.finUserById(id);
+    if (!finUser) throw new BadRequestException('User is not exists');
+
+    const otp = await this.twoFactorAuthenticationService.sendOtp(
+      finUser.twoFactorAuthenticationSecret,
+    );
+
+    return {
+      message: 'Send otp success',
+      code: HttpStatus.OK,
+      data: otp,
+    };
+  }
+
+  async verifyOtptwoFactorAuthentication(id: string, code: string) {
+    const finUser = await this.userService.finUserById(id);
+    if (!finUser) throw new BadRequestException('User is not exists');
+
+    const isVerify =
+      await this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(
+        code,
+        finUser.twoFactorAuthenticationSecret,
+      );
+    console.log(isVerify);
+
+    if (!isVerify) throw new BadRequestException('Otp is incorrect!!');
+
+    return {
+      message: 'Verify otp success',
+      code: HttpStatus.OK,
+    };
   }
 }

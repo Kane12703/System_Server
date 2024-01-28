@@ -5,6 +5,7 @@ import { hashPassword } from '@/utils/password';
 import { AddRoleDTO } from '../dtos';
 import { RoleRepository } from '@/module/role/repositories/role.repository';
 import { UserEntity } from '../entities/user.entity';
+import { UpdatePasswordDto } from '@/auth/dtos/update_password.dto';
 
 @Injectable()
 export class UserService {
@@ -22,6 +23,7 @@ export class UserService {
     return await this.userRepository.createUser({
       email: user.email,
       password: hash,
+      twoFactorAuthenticationSecret: user.twoFactorAuthenticationSecret,
     });
   }
 
@@ -29,7 +31,7 @@ export class UserService {
     return await this.userRepository.finUserById(id);
   }
 
-  async updatePassword(user: LoginUserDto) {
+  async updatePassword(user: UpdatePasswordDto) {
     return await this.userRepository.updatePassword(user);
   }
 

@@ -11,6 +11,7 @@ import { UserModule } from '@/module/user/user.module';
 import { UserService } from '@/module/user/services';
 import { MailerModule, MailerService } from '@nestjs-modules/mailer';
 import { RoleModule } from '@/module/role/role.module';
+import { TwoFactorAuthenticationService } from './services/twoFactorAuthentication.service';
 
 @Module({
   imports: [
@@ -26,6 +27,8 @@ import { RoleModule } from '@/module/role/role.module';
     JwtService,
     AccessTokenStrategy,
     RefreshTokenStrategy,
+    TwoFactorAuthenticationService,
   ],
+  exports: [TwoFactorAuthenticationService],
 })
 export class AuthModule {}
