@@ -12,6 +12,8 @@ import { UserService } from '@/module/user/services';
 import { MailerModule, MailerService } from '@nestjs-modules/mailer';
 import { RoleModule } from '@/module/role/role.module';
 import { TwoFactorAuthenticationService } from './services/twoFactorAuthentication.service';
+import { BullModule } from '@nestjs/bull';
+import { EmailConsumer } from './consumers/email.consumer';
 
 @Module({
   imports: [
@@ -19,6 +21,9 @@ import { TwoFactorAuthenticationService } from './services/twoFactorAuthenticati
     UserModule,
     MailerModule,
     RoleModule,
+    BullModule.registerQueue({
+      name: 'send-mail',
+    }),
   ],
   controllers: [AuthController],
   providers: [
@@ -28,7 +33,9 @@ import { TwoFactorAuthenticationService } from './services/twoFactorAuthenticati
     AccessTokenStrategy,
     RefreshTokenStrategy,
     TwoFactorAuthenticationService,
+    EmailConsumer,
   ],
+
   exports: [TwoFactorAuthenticationService],
 })
 export class AuthModule {}

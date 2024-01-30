@@ -11,6 +11,8 @@ import { UserService } from '@/module/user/services';
 import { MailerService } from '@nestjs-modules/mailer';
 import { RoleRepository } from '@/module/role/repositories/role.repository';
 import { TwoFactorAuthenticationService } from './twoFactorAuthentication.service';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 @Injectable()
 export class AuthService {
@@ -20,6 +22,8 @@ export class AuthService {
     private readonly mailService: MailerService,
     private readonly roleRepository: RoleRepository,
     private readonly twoFactorAuthenticationService: TwoFactorAuthenticationService,
+    @InjectQueue('send-mail')
+    private sendMail: Queue,
   ) {}
   async registerUser(user: LoginUserDto) {
     try {
@@ -27,14 +31,6 @@ export class AuthService {
 
       if (finUser) throw new BadRequestException('Email already exists');
 
-      // await this.mailService.sendMail({
-      //   to: user.email,
-      //   subject: 'Welcome to my website',
-      //   template: './wellcome',
-      //   context: {
-      //     name: user.email,
-      //   },
-      // });
       const secret =
         await this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret();
 
@@ -192,10 +188,22 @@ export class AuthService {
       finUser.twoFactorAuthenticationSecret,
     );
 
+    await this.sendMail.add(
+      'send_mail_otp',
+      {
+        to: finUser.email,
+        name: finUser.email,
+        code: otp,
+        email: finUser.email,
+      },
+      {
+        removeOnComplete: true,
+      },
+    );
+
     return {
       message: 'Send otp success',
       code: HttpStatus.OK,
-      data: otp,
     };
   }
 
@@ -208,7 +216,6 @@ export class AuthService {
         code,
         finUser.twoFactorAuthenticationSecret,
       );
-    console.log(isVerify);
 
     if (!isVerify) throw new BadRequestException('Otp is incorrect!!');
 

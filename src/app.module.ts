@@ -11,6 +11,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { join } from 'path';
 import { CloudinaryModule } from './configs/cloudinary/cloudinary.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
@@ -42,6 +43,13 @@ import { CloudinaryModule } from './configs/cloudinary/cloudinary.module';
       },
     }),
     CloudinaryModule,
+
+    BullModule.forRoot({
+      redis: {
+        host: 'redis',
+        port: 6379,
+      },
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
