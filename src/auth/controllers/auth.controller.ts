@@ -63,4 +63,10 @@ export class AuthController {
   ) {
     return this.authService.verifyOtptwoFactorAuthentication(id, payload.code);
   }
+
+  @UseGuards(AccessTokenGuard)
+  @Put('update_status_2fa')
+  async updateTwoFactorAuthentication(@GetUser('sub') id: string) {
+    return this.authService.updateTwoFactorAuthentication(id);
+  }
 }

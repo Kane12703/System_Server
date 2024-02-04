@@ -13,6 +13,7 @@ import { RoleRepository } from '@/module/role/repositories/role.repository';
 import { TwoFactorAuthenticationService } from './twoFactorAuthentication.service';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { UserRepository } from '@/module/user/repositories';
 
 @Injectable()
 export class AuthService {
@@ -22,6 +23,7 @@ export class AuthService {
     private readonly mailService: MailerService,
     private readonly roleRepository: RoleRepository,
     private readonly twoFactorAuthenticationService: TwoFactorAuthenticationService,
+    private readonly userRepository: UserRepository,
     @InjectQueue('send-mail')
     private sendMail: Queue,
   ) {}
@@ -221,6 +223,19 @@ export class AuthService {
 
     return {
       message: 'Verify otp success',
+      code: HttpStatus.OK,
+    };
+  }
+
+  async updateTwoFactorAuthentication(id: string) {
+    const finUser = await this.userService.finUserById(id);
+    if (!finUser) throw new BadRequestException('User is not exists');
+    const update = await this.userRepository.updateTwoFactorAuthentication(
+      id,
+      !finUser.isTwoFactorAuthenticationEnabled,
+    );
+    return {
+      message: 'Update status two Factor Authentication success',
       code: HttpStatus.OK,
     };
   }

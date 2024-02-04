@@ -70,4 +70,18 @@ export class UserRepository extends Repository<UserEntity> {
       .of({ id: deleteRole.user_id })
       .remove({ id: deleteRole.role_id });
   }
+
+  async updateTwoFactorAuthentication(
+    id: string,
+    isTwoFactorAuthenticationEnabled: boolean,
+  ) {
+    return await this.userRepository
+      .createQueryBuilder()
+      .update(UserEntity)
+      .set({
+        isTwoFactorAuthenticationEnabled: isTwoFactorAuthenticationEnabled,
+      })
+      .where('id= :id', { id: id })
+      .execute();
+  }
 }
