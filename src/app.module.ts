@@ -1,13 +1,56 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth';
-import { PostgresModule } from './configs';
+import { Environments, PostgresModule } from './configs';
 import { UserModule } from './module/user/user.module';
+import { RoleModule } from './module/role/role.module';
+import { PermissionModule } from './module/permission/permission.module';
+import { ProfileModule } from './module/profile/profile.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { join } from 'path';
+import { CloudinaryModule } from './configs/cloudinary/cloudinary.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
-  imports: [AuthModule, PostgresModule, UserModule],
+  imports: [
+    CloudinaryModule,
+    AuthModule,
+    PostgresModule,
+    UserModule,
+    RoleModule,
+    PermissionModule,
+    ProfileModule,
+    MailerModule.forRoot({
+      transport: {
+        host: Environments.MAIL_HOST,
+        secure: false,
+        auth: {
+          user: Environments.MAIL_USER,
+          pass: Environments.MAIL_PASSWORD,
+        },
+      },
+      defaults: {
+        from: `"No Reply" <${Environments.MAIL_FROM}>`,
+      },
+      template: {
+        dir: join(__dirname, 'src/configs/email/templates'),
+        adapter: new HandlebarsAdapter(),
+        options: {
+          strict: true,
+        },
+      },
+    }),
+    CloudinaryModule,
+
+    BullModule.forRoot({
+      redis: {
+        host: 'redis',
+        port: 6379,
+      },
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

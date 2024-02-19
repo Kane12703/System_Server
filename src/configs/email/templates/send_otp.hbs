@@ -1,0 +1,48 @@
+<head>
+  <title>Verify information</title>
+  <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+  <style>
+    body { font-family: 'Monaco', 'Poppins', 'Arial', 'Helvetica', 'sans-serif';
+    background-color: #cbd5e1; } .container { margin: 0 auto; width: 800px;
+    padding: 10px 30px 30px 30px; box-shadow: 2 2 4px #ddd; background-color:
+    #f3f4f6; border-radius: 20px; } a.link { border: solid 1px #0ea5e9;
+    background-color: #0ea5e9; text-decoration: none; color: #fff; font-weight:
+    bold; display: block; width: 400px; text-align: center; padding: 10px 0;
+    margin-top: 50px; border-radius: 5px; } .text-blue { color: #0ea5e9; }
+    .text-blue h1 { font-size: 24px; font-weight: bold; } .text-email {
+    font-size: 16px; font-weight: bold; }
+  </style>
+</head>
+
+<body>
+  <div class='container'>
+    <h1 class='text-blue'>Verify your information</h1>
+    <div>Hello <b class='text-blue'>{{name}}</b> !</div>
+    <p>
+      You recently registered an account with Kane.
+      <br /><br />
+      Your account information:
+      <br /><br />
+      <span class='text-email'>
+        Information :
+        <span class='text-blue'>{{email}}</span>
+      </span>
+      <br /><br />
+      Please enter the following code to verify your information:
+    </p>
+    <p>
+      <span class='text-email'>
+        Code:
+        <span class='text-orange'>{{code}}</span>
+      </span>
+    </p>
+    <p>
+      Regards,
+      <br />
+      <em>Kane</em>
+      <br />
+      <br />
+
+    </p>
+  </div>
+</body>

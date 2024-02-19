@@ -32,15 +32,33 @@ services:
     command: yarn start:dev
     depends_on:
       - postgres
+      - redis
     env_file:
       - .env
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - redis:/data
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres
+
 volumes:
   api:
     name: vapi
     driver: local
   docker-nest-postgres:
     name: vdocker-nest-postgres
+    driver: local
+  redis:
     driver: local
